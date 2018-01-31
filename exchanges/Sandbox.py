@@ -14,3 +14,5 @@ class Sandbox(Wrapper):
         pass
     def price(self):
         pass
+    def buy_value(self):
+        pass
