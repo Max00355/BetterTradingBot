@@ -19,7 +19,7 @@ Algorithm Steps
 
 
 def main_loop(api_obj):
-    print ("Date", config.BUY, config.WITH, "Price", "Bought At", "Value", "Value Percent Difference")
+    print (' | '.join(["Date", config.BUY, config.WITH, "Price", "Bought At", "Value", "Value Percent Difference"]))
     while True:
         funds = api_obj.funds()
         unused_funds = funds[config.WITH.upper()]
@@ -47,4 +47,4 @@ def main_loop(api_obj):
             elif value_percentage > config.WITHDRAW_PROFITS_AT:
                 sell_profits(api_obj, price, buy_value, funds)
     
-        time.sleep(2)
+        #time.sleep(2)
