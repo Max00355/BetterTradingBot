@@ -14,6 +14,6 @@ def buy_random(api_obj, funds):
         if unused_funds > RANDOM_MIN:
             buy_amount = random.randint(RANDOM_MIN, math.floor(unused_funds))
             api_obj.buy(buy_amount)
-            print("Bought", buy_amount, config.WITH, "of", config.BUY)
+            print("Bought", buy_amount, config.WITH, "of", config.BUY, "({})".format(float(buy_amount) / api_obj.price()))
         elif coins_owned == 0:
             sys.exit("I've run out of funds")

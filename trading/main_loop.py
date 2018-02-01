@@ -12,7 +12,7 @@ Algorithm Steps
 1. Check amount owned
   a. If amount owned of config.BUY is zero then buy random amount
 2. Check if value appreciated/depreciated in value
-  a. If appreciated by more than config.WITHDRAW_PROFITS_AT then sell the difference and invest random amount again at new price
+  a. If appreciated by more than config.WITHDRAW_PROFITS_AT then sell the difference
   b. If depreciated in value more than config.SELL_AT then sell everything and wait three hours before investing random amount again
 
 """
@@ -34,8 +34,13 @@ def main_loop(api_obj):
         print(config.WITH, funds[config.WITH])
         print(config.BUY, funds[config.BUY])
         print(config.BUY, "price", price)
+        print("BUY PRICE({})".format(config.WITH), buy_value)
+        print(str(round(100 * value_percentage, 2)) + "%", "change")
+        print()
         if config.DEBUG:
             input()
+
+
         if config.BUY not in funds or not funds[config.BUY]:
             buy_random(api_obj, funds)
         else:
@@ -45,5 +50,7 @@ def main_loop(api_obj):
                     time.sleep(60 * 60 * 6)
             elif value_percentage > config.WITHDRAW_PROFITS_AT:
                 sell_profits(api_obj, price, buy_value, funds)
+
+       
         if not config.DEBUG:
             time.sleep(60)
