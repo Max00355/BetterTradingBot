@@ -35,7 +35,8 @@ class CoinMarketCap(Wrapper):
         if self.funds_dict[config.BUY] < amount:
             amount = self.funds_dict[config.BUY]
 
-        price = self.price()        
+        price = self.price()       
+        self.buy_val = price
         self.funds_dict[config.BUY] -= amount
         self.usd += amount * price
         

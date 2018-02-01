@@ -38,9 +38,9 @@ def main_loop(api_obj):
         print(str(round(100 * value_percentage, 2)) + "%", "change")
         print()
         if config.DEBUG:
-            #input()
-            pass
-
+            if config.BREAK_POINTS:
+                input()
+            
         if config.BUY not in funds or not funds[config.BUY]:
             buy_all(api_obj, funds)
         else:
