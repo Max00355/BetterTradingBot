@@ -2,6 +2,7 @@
 
 DEBUG = True # When set to true random the price will change at random time simulating big drops and gains. This is to test selling and buying and will cause loss in production.
 BREAK_POINTS = True # Makes the program wait for enter key after every main_loop iteration
+STARTING_AMOUNT = 1000 # USD
 
 # API KEYS
 

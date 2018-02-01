@@ -8,7 +8,7 @@ class CoinMarketCap(Wrapper):
         Wrapper.__init__(self)
         self.funds_dict = {}
         self.API_URL = "https://api.coinmarketcap.com/v1/ticker/"
-        self.usd = 1000
+        self.usd = config.STARTING_AMOUNT
         self.buy_val = 0
         self.orig_price = 0
 
