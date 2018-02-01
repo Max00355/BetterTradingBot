@@ -19,32 +19,31 @@ Algorithm Steps
 
 
 def main_loop(api_obj):
-    print (' | '.join(["Date", config.BUY, config.WITH, "Price", "Bought At", "Value", "Value Percent Difference"]))
+    if config.DEBUG:
+        print("Press Enter to Continue")
     while True:
         funds = api_obj.funds()
-        unused_funds = funds[config.WITH.upper()]
         price = api_obj.price()
-        
-        if config.DEBUG:
-            rand = random.randint(0, 100)
-            if rand < 10:
-                price -= 500
-            elif rand > 90:
-                price += 500
         
         buy_value = api_obj.buy_value()
         current_value = funds[config.BUY] * price
         value_percentage = check_value(funds, buy_value, price)
         buy = funds[config.BUY]
         unused = funds[config.WITH]
-        print(datetime.datetime.now(), buy, unused, price, buy_value, current_value, str(value_percentage * 100) + "%" )
-        
+
+        print(config.WITH, funds[config.WITH])
+        print(config.BUY, funds[config.BUY])
+        print(config.BUY, "price", price)
+        if config.DEBUG:
+            input()
         if config.BUY not in funds or not funds[config.BUY]:
-            buy_random(api_obj, unused_funds)
+            buy_random(api_obj, funds)
         else:
             if value_percentage < config.SELL_ALL_AT:
                 sell_all(api_obj, funds)
+                if not config.DEBUG:
+                    time.sleep(60 * 60 * 6)
             elif value_percentage > config.WITHDRAW_PROFITS_AT:
                 sell_profits(api_obj, price, buy_value, funds)
-    
-        #time.sleep(2)
+        if not config.DEBUG:
+            time.sleep(60)

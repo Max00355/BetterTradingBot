@@ -1,6 +1,7 @@
 from exchanges.Wrapper import Wrapper
 import config
 import requests
+import random
 
 class CoinMarketCap(Wrapper):
     def __init__(self):
@@ -9,6 +10,7 @@ class CoinMarketCap(Wrapper):
         self.API_URL = "https://api.coinmarketcap.com/v1/ticker/"
         self.usd = 1000
         self.buy_val = 0
+        self.orig_price = 0
 
     def buy(self, worth):
         price = self.price()
@@ -18,17 +20,18 @@ class CoinMarketCap(Wrapper):
             if config.BUY not in self.funds_dict:
                 self.funds_dict[config.BUY] = 0
             self.funds_dict[config.BUY] += amount
-            self.buy_val = worth
+            self.buy_val = price
         else:
             raise Exception("Insufficient funds")
     
     def sell(self, amount):
         if config.BUY not in self.funds_dict or self.funds_dict[config.BUY] < amount:
             raise Exception("Insufficient funds")
-        
+
+        price = self.price()        
         self.funds_dict[config.BUY] -= amount
-        self.usd += amount * self.price() + 500
-   
+        self.usd += amount * price
+        
     def buy_value(self):
         return self.buy_val
 
@@ -43,7 +46,19 @@ class CoinMarketCap(Wrapper):
                 }
 
     def price(self):
-        api_data = requests.get(self.API_URL).json()
-        for coin in api_data:
-            if coin['symbol'] == config.BUY.upper():
-                return float(coin['price_usd'])
+        if config.DEBUG:
+            if not self.orig_price:
+                api_data = requests.get(self.API_URL).json()
+                for coin in api_data:
+                    if coin['symbol'] == config.BUY.upper():
+                        self.orig_price = float(coin['price_usd'])
+            else:
+                self.orig_price += (random.randint(0, 5) / 100.0) * self.orig_price * random.choice([1, -1])
+        
+            return self.orig_price
+        else:
+            api_data = requests.get(self.API_URL).json()
+            for coin in api_data:
+                if coin['symbol'] == config.BUY.upper():
+                    return float(coin['price_usd'])
+

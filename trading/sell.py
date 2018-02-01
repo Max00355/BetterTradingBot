@@ -7,8 +7,8 @@ def sell_all(api_obj, funds):
 
 def sell_profits(api_obj, price, buy_value, funds):
     current_value = funds[config.BUY] * price
-    difference = current_value - buy_value
+    difference = current_value - (buy_value * funds[config.BUY])
     amount = funds[config.BUY] / float(difference)
     api_obj.sell(amount)
-    print("Sold", amount, config.BUY)
+    print("Sold profits", amount, config.BUY)
     buy_random(api_obj, funds)
