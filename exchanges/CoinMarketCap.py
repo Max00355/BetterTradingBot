@@ -13,6 +13,8 @@ class CoinMarketCap(Wrapper):
         self.orig_price = 0
 
     def buy(self, worth):
+        if worth == 0:
+            return
         price = self.price()
         if worth <= self.usd:
             amount = float(worth) / price
@@ -25,8 +27,13 @@ class CoinMarketCap(Wrapper):
             raise Exception("Insufficient funds")
     
     def sell(self, amount):
-        if config.BUY not in self.funds_dict or self.funds_dict[config.BUY] < amount:
+        if amount == 0:
+            return
+        if config.BUY not in self.funds_dict:
             raise Exception("Insufficient funds")
+
+        if self.funds_dict[config.BUY] < amount:
+            amount = self.funds_dict[config.BUY]
 
         price = self.price()        
         self.funds_dict[config.BUY] -= amount
@@ -53,7 +60,7 @@ class CoinMarketCap(Wrapper):
                     if coin['symbol'] == config.BUY.upper():
                         self.orig_price = float(coin['price_usd'])
             else:
-                self.orig_price += (random.randint(0, 5) / 100.0) * self.orig_price * random.choice([1, -1])
+                self.orig_price += (random.randint(0, 3) / 100.0) * self.orig_price * random.choice([1, -1])
         
             return self.orig_price
         else:

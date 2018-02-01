@@ -1,7 +1,7 @@
 import config 
 import time
 import datetime
-from trading.buy import buy_random
+from trading.buy import buy_all
 from trading.value import check_value
 from trading.sell import sell_all, sell_profits
 import random
@@ -38,11 +38,11 @@ def main_loop(api_obj):
         print(str(round(100 * value_percentage, 2)) + "%", "change")
         print()
         if config.DEBUG:
-            input()
-
+            #input()
+            pass
 
         if config.BUY not in funds or not funds[config.BUY]:
-            buy_random(api_obj, funds)
+            buy_all(api_obj, funds)
         else:
             if value_percentage < config.SELL_ALL_AT:
                 sell_all(api_obj, funds)

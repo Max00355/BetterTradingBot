@@ -1,4 +1,3 @@
-from trading.buy import buy_random
 import config
 
 def sell_all(api_obj, funds):
